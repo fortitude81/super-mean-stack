@@ -7,4 +7,9 @@ var Todo = mongoose.model('Todo', {
     isEditing: Boolean
 });
 
+var User = mongoose.model('User', {
+	username: String,
+	password: String
+})
+
 module.exports.Todo = Todo;
