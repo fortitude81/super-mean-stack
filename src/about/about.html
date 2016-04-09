@@ -1,10 +1,10 @@
 <div class="container">
     <a class="nav-link">About</a>
-    <a ui-sref="register" class="nav-link" ng-if="!User">Register</a>
-    <a ui-sref="login" class="nav-link" ng-if="!User">Login</a>
-    <a ng-click="logout()" class="nav-link" ng-if="User">Logout</a>
-    <span class="nav-link" ng-if="User">{{User | uppercase}}</span>
-    <a ui-sref="home" class="nav-link">Home</a>
+    <a ui-sref="register" class="nav-link" ng-if="!User.name">Register</a>
+    <a ui-sref="login" class="nav-link" ng-if="!User.name">Login</a>
+    <a ng-click="logout()" class="nav-link" ng-if="User.name">Logout</a>
+    <span class="nav-link" ng-if="User.name">{{User.name | uppercase}}</span>
+    <a ui-sref="todos" class="nav-link">Home</a>
     <h2>About Page</h2>
 
     <p>The only purpose of this page is to demonstrate Angular routing.</p>

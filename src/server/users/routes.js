@@ -3,6 +3,15 @@ var User = require('server/db/db').User;
 var express = require('express');
 var router = express.Router();
 
+router.post('/loggedin', function(req, res) {
+    var reqUser = req.body;
+    if(req.session['User']  && req.session['User'].name == reqUser.name) {
+        res.json(req.session['User']);
+    } else {
+        res.send('User is not loggedin!');
+    }
+});
+
 router.post('/logout', function(req, res) {
     delete req.session['User'];
     res.send('User Logout Successfully!');
@@ -16,8 +25,13 @@ router.post('/login', function(req, res) {
         }
         else if (user !== null) {
             if (reqUser.passWord === user.passWord) {
-                req.session['User'] = reqUser.userName;
-                res.send('User Login Successfully!');
+                req.session['User'] = {};
+                req.session['User'].name = user.userName;
+                req.session['User'].role = user.role;
+                res.send({
+                    message: 'User Login Successfully!',
+                    data: req.session['User']
+                });
             }
         }
         else {
