@@ -1,5 +1,10 @@
 <div class="container">
     <a ui-sref="about" class="nav-link">About</a>
+    <a ui-sref="register" class="nav-link" ng-if="!User">Register</a>
+    <a ui-sref="login" class="nav-link" ng-if="!User">Login</a>
+    <a ng-click="logout()" class="nav-link" ng-if="User">Logout</a>
+    <span class="nav-link" ng-if="User">{{User | uppercase}}</span>
+    <a class="nav-link">Home</a>
     <h2>ToDo App</h2>
 
     <form ng-submit="createTask()">

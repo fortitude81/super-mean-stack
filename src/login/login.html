@@ -1,0 +1,13 @@
+<div class="container">
+    <a ui-sref="about" class="nav-link">About</a>
+    <a ui-sref="register" class="nav-link">Register</a>
+    <a class="nav-link">Login</a>
+    <a ui-sref="todos" class="nav-link">Home</a>
+    <h2>Login</h2>
+
+    <form ng-submit="login()">
+        <input class="form-control todos__create-input" type="text" placeholder="User Name" ng-model="user.name" />
+        <input class="form-control todos__create-input" type="password" placeholder="Password" ng-model="user.password" />
+        <button class="btn btn-success todos__create-button" type="submit">Login</button>
+    </form>
+</div>

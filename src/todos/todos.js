@@ -1,6 +1,6 @@
 import _ from 'lodash';
 
-export default function($scope, todoFactory) {
+export default function($scope, todoFactory, userFactory) {
     let params = {
         createHasInput: false
     };
@@ -17,6 +17,13 @@ export default function($scope, todoFactory) {
     //     isEditing: false
     // }
     // ];
+
+    $scope.User = userFactory.getUser();
+
+    $scope.logout = function() {
+        userFactory.logout();
+        $scope.User = '';
+    }
 
     todoFactory.getTasks($scope);
 
