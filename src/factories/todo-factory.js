@@ -3,20 +3,25 @@ import angular from 'angular';
 
 const todoFactory = angular.module('app.todoFactory', [])
 
-.factory('todoFactory', ($http) => {
+.factory('todoFactory', ($http, userFactory, $timeout) => {
+
+    var User = userFactory.getUser();
+
     function getTasks($scope) {
-        $http.get('/todos').success(response => {
-            $scope.todos = response.todos;
+        $timeout(function () {
+            $http.get('/todos/' + User.name).success(response => {
+                $scope.todos = response.todos;
+            });
         });
     }
 
     function createTask($scope, params) {
         if (!$scope.createTaskInput) { return; }
-
         $http.post('/todos', {
             task: $scope.createTaskInput,
             isCompleted: false,
-            isEditing: false
+            isEditing: false,
+            ownerUserID: User.name
         }).success(response => {
             getTasks($scope);
             $scope.createTaskInput = '';

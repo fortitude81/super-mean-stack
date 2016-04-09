@@ -3,8 +3,8 @@ var Todo = require('server/db/db').Todo;
 var express = require('express');
 var router = express.Router();
 
-router.get('/', function(req, res) {
-    Todo.find(function(err, results) {
+router.get('/:username', function(req, res) {
+    Todo.find({ "ownerUserID": req.params.username }, function(err, results) {
         if (err) { console.log(err); }
 
         res.send({ todos: results });

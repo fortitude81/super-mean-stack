@@ -8,7 +8,8 @@ const todoFactory = angular.module('app.userFactory', [])
     var User = {};
     $http.post('/users/loggedin', { name: localStorage.getItem('user') }).success(response => {
         if(response == 'User is not loggedin!') {
-            User = {};
+            User.name = '';
+            User.role = '';
             localStorage.removeItem('user')
         } else {
             User.name = response.name;
@@ -26,8 +27,10 @@ const todoFactory = angular.module('app.userFactory', [])
 
         $http.post('/users/logout').success(response => {
             if(response == 'User Logout Successfully!') {
-                User = {};
+                User.name = '';
+                User.role = '';
                 localStorage.removeItem('user', User.name)
+                $state('login');
             }
         });
     }
@@ -40,13 +43,15 @@ const todoFactory = angular.module('app.userFactory', [])
             passWord: $scope.user.password
         }).success(response => {
             if(response.message == 'User Login Successfully!') {
-                User = response.data;
+                User.name = response.data.name;
+                User.role = response.data.role;
                 localStorage.setItem('user', User.name)
                 $scope.user = '';
                 $state.go('todos');
             } else {
                 console.log('Some thing went wrong, Error: ', response);
-                User = {};
+                User.name = '';
+                User.role = '';
                 localStorage.removeItem('user')
             }
         });

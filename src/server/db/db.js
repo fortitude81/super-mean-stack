@@ -5,8 +5,8 @@ var Todo = mongoose.model('Todo', {
     task: String,
     isCompleted: Boolean,
     isEditing: Boolean,
-    ownerUserID: mongoose.Schema.Types.ObjectId,
-    assignUserID: mongoose.Schema.Types.ObjectId
+    ownerUserID: String,
+    assignUserID: String
 });
 
 var User = mongoose.model('User', {

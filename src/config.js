@@ -26,7 +26,18 @@ app.config(($stateProvider, $urlRouterProvider, $locationProvider) => {
         .state('todos', {
             url: '/',
             template: require('todos/todos.html'),
-            controller: todosController
+            controller: todosController,
+            resolve: {
+                User: function($timeout, userFactory, $location){
+                    $timeout(function(){
+                    if (userFactory.getUser().name) {
+                        return true;
+                    } else {
+                        $location.path('/login');
+                    }
+                    })
+                }
+            }
         })
         .state('about', {
             url: '/about',

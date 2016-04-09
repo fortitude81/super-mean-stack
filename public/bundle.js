@@ -43568,7 +43568,18 @@
 	    }).state('todos', {
 	        url: '/',
 	        template: __webpack_require__(41),
-	        controller: _todos2.default
+	        controller: _todos2.default,
+	        resolve: {
+	            User: function User($timeout, userFactory, $location) {
+	                $timeout(function () {
+	                    if (userFactory.getUser().name) {
+	                        return true;
+	                    } else {
+	                        $location.path('/login');
+	                    }
+	                });
+	            }
+	        }
 	    }).state('about', {
 	        url: '/about',
 	        template: __webpack_require__(42),
@@ -48144,10 +48155,15 @@
 
 	function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-	var todoFactory = _angular2.default.module('app.todoFactory', []).factory('todoFactory', function ($http) {
+	var todoFactory = _angular2.default.module('app.todoFactory', []).factory('todoFactory', function ($http, userFactory, $timeout) {
+
+	    var User = userFactory.getUser();
+
 	    function getTasks($scope) {
-	        $http.get('/todos').success(function (response) {
-	            $scope.todos = response.todos;
+	        $timeout(function () {
+	            $http.get('/todos/' + User.name).success(function (response) {
+	                $scope.todos = response.todos;
+	            });
 	        });
 	    }
 
@@ -48155,11 +48171,11 @@
 	        if (!$scope.createTaskInput) {
 	            return;
 	        }
-
 	        $http.post('/todos', {
 	            task: $scope.createTaskInput,
 	            isCompleted: false,
-	            isEditing: false
+	            isEditing: false,
+	            ownerUserID: User.name
 	        }).success(function (response) {
 	            getTasks($scope);
 	            $scope.createTaskInput = '';
@@ -64211,7 +64227,8 @@
 	    var User = {};
 	    $http.post('/users/loggedin', { name: localStorage.getItem('user') }).success(function (response) {
 	        if (response == 'User is not loggedin!') {
-	            User = {};
+	            User.name = '';
+	            User.role = '';
 	            localStorage.removeItem('user');
 	        } else {
 	            User.name = response.name;
@@ -64231,7 +64248,8 @@
 
 	        $http.post('/users/logout').success(function (response) {
 	            if (response == 'User Logout Successfully!') {
-	                User = {};
+	                User.name = '';
+	                User.role = '';
 	                localStorage.removeItem('user', User.name);
 	            }
 	        });
@@ -64247,13 +64265,15 @@
 	            passWord: $scope.user.password
 	        }).success(function (response) {
 	            if (response.message == 'User Login Successfully!') {
-	                User = response.data;
+	                User.name = response.data.name;
+	                User.role = response.data.role;
 	                localStorage.setItem('user', User.name);
 	                $scope.user = '';
 	                $state.go('todos');
 	            } else {
 	                console.log('Some thing went wrong, Error: ', response);
-	                User = {};
+	                User.name = '';
+	                User.role = '';
 	                localStorage.removeItem('user');
 	            }
 	        });
