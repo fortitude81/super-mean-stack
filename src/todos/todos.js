@@ -20,6 +20,8 @@ export default function($scope, todoFactory, userFactory) {
 
     $scope.User = userFactory.getUser();
 
+    $scope.users = userFactory.getUsers();
+
     $scope.logout = function() {
         userFactory.logout();
         $scope.User = '';
@@ -38,6 +40,15 @@ export default function($scope, todoFactory, userFactory) {
 
     $scope.onCancelClick = todo => {
         todo.isEditing = false;
+    };
+
+    $scope.selectTodo = todo => {
+        $scope.selectedTodo = todo;
+    }
+
+    $scope.onAssignClick = todo => {
+        $scope.selectedTodo.assignUserID = $scope.selectedUser;
+        $scope.updateTask($scope.selectedTodo);
     };
 
     const { createTask, updateTask, deleteTask, watchCreateTaskInput } = todoFactory;

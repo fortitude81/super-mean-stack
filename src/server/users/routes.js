@@ -3,6 +3,16 @@ var User = require('server/db/db').User;
 var express = require('express');
 var router = express.Router();
 
+router.get('/', function(req, res) {
+    User.find({}, 'userName', function (err, users) {
+        if (err) {
+            res.send(err, false);
+        } else {
+            res.send(false, users);
+        }
+    });
+});
+
 router.post('/loggedin', function(req, res) {
     var reqUser = req.body;
     if(req.session['User']  && req.session['User'].name == reqUser.name) {
@@ -42,7 +52,7 @@ router.post('/login', function(req, res) {
 
 router.post('/register', function(req, res) {
     var newUser = req.body;
-    newUser.role = 'member';
+    newUser.role = 'MEMBER';
     User.findOne({ userName: newUser.userName }, function (err, user) {
         if (err) {
             res.send(err);

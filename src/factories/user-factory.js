@@ -3,9 +3,10 @@ import angular from 'angular';
 
 const todoFactory = angular.module('app.userFactory', [])
 
-.factory('userFactory', ($http, $state) => {
+.factory('userFactory', ($http, $state, $location) => {
 
     var User = {};
+    var Users = [];
     $http.post('/users/loggedin', { name: localStorage.getItem('user') }).success(response => {
         if(response == 'User is not loggedin!') {
             User.name = '';
@@ -17,9 +18,18 @@ const todoFactory = angular.module('app.userFactory', [])
             localStorage.setItem('user', User.name)
         }
     });
+    $http.get('/users').success(response => {
+        response.forEach(function(val){
+            Users.push(val);
+        })
+    });
 
     function getUser() {
         return User;
+    }
+
+    function getUsers() {
+        return Users;
     }
 
     function logout() {
@@ -30,7 +40,7 @@ const todoFactory = angular.module('app.userFactory', [])
                 User.name = '';
                 User.role = '';
                 localStorage.removeItem('user', User.name)
-                $state('login');
+                $location.path('/login');
             }
         });
     }
@@ -75,6 +85,7 @@ const todoFactory = angular.module('app.userFactory', [])
 
     return {
         getUser,
+        getUsers,
         logout,
         login,
         register

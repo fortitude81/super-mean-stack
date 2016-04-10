@@ -60,7 +60,26 @@
                     ng-click="onCancelClick(todo)">
                     Cancel
                 </button>
+                <a href="#assignModel" role="button" class="btn btn-warning" data-toggle="modal" ng-click="selectTodo(todo)" ng-if="(User.role | uppercase) == 'ADMIN'">Assign</a>
             </td>
         </tr>
     </table>
+    <div id="assignModel" class="modal fade" tabindex="-1" role="dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+                <h3>Select User</h3>
+            </div>
+            <div class="modal-body">
+
+                <select class="selectpicker" data-container="body" ng-model="selectedUser">
+                    <option ng-repeat="user in users" value="{{user.userName}}">{{user.userName | uppercase}}</option>
+                </select>
+
+            </div>
+            <div class="modal-footer">
+                <button class="btn btn-primary" ng-click="onAssignClick()">Save changes</button>
+            </div>
+        </div>
+    </div>
 </div>
