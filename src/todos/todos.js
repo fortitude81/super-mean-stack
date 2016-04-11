@@ -48,13 +48,14 @@ export default function($scope, todoFactory, userFactory) {
 
     $scope.onAssignClick = todo => {
         $scope.selectedTodo.assignUserID = $scope.selectedUser;
-        $scope.updateTask($scope.selectedTodo);
+        $scope.assignTask($scope.selectedTodo);
     };
 
-    const { createTask, updateTask, deleteTask, watchCreateTaskInput } = todoFactory;
+    const { createTask, updateTask, assignTask, deleteTask, watchCreateTaskInput } = todoFactory;
 
     $scope.createTask = _.partial(createTask, $scope, params);
     $scope.updateTask = _.partial(updateTask, $scope);
+    $scope.assignTask = _.partial(assignTask, $scope);
     $scope.deleteTask = _.partial(deleteTask, $scope);
     $scope.$watch('createTaskInput', _.partial(watchCreateTaskInput, params, $scope));
 }

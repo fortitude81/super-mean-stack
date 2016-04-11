@@ -41,6 +41,15 @@ const todoFactory = angular.module('app.todoFactory', [])
         // todo.isEditing = false;
     }
 
+    function assignTask($scope, todo) {
+        $http.put(`/todos/assign/${todo._id}`, { assignUserID: todo.assignUserID }).success(response => {
+            getTasks($scope);
+        });
+
+        // todo.task = todo.updatedTask;
+        // todo.isEditing = false;
+    }
+
     function deleteTask($scope, todoToDelete) {
         $http.delete(`/todos/${todoToDelete._id}`).success(response => {
             getTasks($scope);
@@ -67,6 +76,7 @@ const todoFactory = angular.module('app.todoFactory', [])
         getTasks,
         createTask,
         updateTask,
+        assignTask,
         deleteTask,
         watchCreateTaskInput
     };

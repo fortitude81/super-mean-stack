@@ -16,6 +16,7 @@
         <tr>
             <th>Completed?</th>
             <th>Task</th>
+            <th>Assign</th>
             <th>Actions</th>
         </tr>
         <tr ng-repeat="todo in todos">
@@ -37,6 +38,11 @@
                         ng-value="todo.task"
                         ng-model="todo.updatedTask" />
                 </form>
+            </td>
+            <td>
+                <span>
+                    {{todo.assignUserID | uppercase}}
+                </span>
             </td>
             <td>
                 <button ng-if="!todo.isEditing"
@@ -78,7 +84,7 @@
 
             </div>
             <div class="modal-footer">
-                <button class="btn btn-primary" ng-click="onAssignClick()">Save changes</button>
+                <button class="btn btn-primary" data-dismiss="modal" aria-hidden="true" ng-click="onAssignClick()">Save changes</button>
             </div>
         </div>
     </div>
